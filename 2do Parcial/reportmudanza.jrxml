@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11ff9407-9fc8-455e-8fa0-7ae95666e0bb">
+	<property name="ireport.zoom" value="1.6105100000000028"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="432"/>
+	<parameter name="Servicioid" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select c.cliente_cedula,c.cliente_nombres, c.cliente_apellidos,c.cliente_telefono,c.cliente_direccion, ciu.ciudad_nombre as ciudad_origen,
+		s.solicitud_origen,ciudad.ciudad_nombre as ciudad_destino,s.solicitud_destino, s.solicitud_fecha,s.solicitud_descripcion,
+		sm.servicio_distancia,e.empleado_cedula,e.empleado_nombre,e.empleado_telefono,te.tipo_empleado_descripcion,
+		suc.sucursal_id,suc.sucursal_direccion,suc.sucursal_telefono,cius.ciudad_nombre as ciudad_sucursal,emp.empresa_nombre,
+		vsm.vehiculo_placa,sm.servicio_id
+		from cliente c
+		inner join solicitud s on s.cliente_cedula = c.cliente_cedula
+		inner join servicio_mudanza sm on sm.solicitud_id = s.solicitud_id
+		inner join ciudad ciu on ciu.ciudad_id = s.ciudad_id_origen
+		inner join ciudad on ciudad.ciudad_id = s.ciudad_id_destino
+		inner join empleado_asignado ea on ea.servicio_id = sm.servicio_id
+		inner join empleado e on e.empleado_cedula = ea.empleado_cedula
+		inner join tipo_empleado te on te.tipo_empleado_id = e.tipo_empleado_id
+		inner join sucursal suc on suc.sucursal_id = sm.sucursal_id
+		inner join ciudad cius on cius.ciudad_id = suc.ciudad_id
+		inner join empresa emp on emp.empresa_id = suc.empresa_id
+		inner join vehiculo_servicio_mudanza vsm on vsm.vehiculo_servicio_mudanza_id = ea.vehiculo_servicio_mudanza_id
+		where sm.servicio_id=$P{Servicioid};]]>
+	</queryString>
+	<field name="cliente_cedula" class="java.lang.String"/>
+	<field name="cliente_nombres" class="java.lang.String"/>
+	<field name="cliente_apellidos" class="java.lang.String"/>
+	<field name="cliente_telefono" class="java.lang.String"/>
+	<field name="cliente_direccion" class="java.lang.String"/>
+	<field name="ciudad_origen" class="java.lang.String"/>
+	<field name="solicitud_origen" class="java.lang.String"/>
+	<field name="ciudad_destino" class="java.lang.String"/>
+	<field name="solicitud_destino" class="java.lang.String"/>
+	<field name="solicitud_fecha" class="java.sql.Date"/>
+	<field name="solicitud_descripcion" class="java.lang.String"/>
+	<field name="servicio_distancia" class="java.lang.Double"/>
+	<field name="empleado_cedula" class="java.lang.String"/>
+	<field name="empleado_nombre" class="java.lang.String"/>
+	<field name="empleado_telefono" class="java.lang.String"/>
+	<field name="tipo_empleado_descripcion" class="java.lang.String"/>
+	<field name="sucursal_id" class="java.lang.String"/>
+	<field name="sucursal_direccion" class="java.lang.String"/>
+	<field name="sucursal_telefono" class="java.lang.String"/>
+	<field name="ciudad_sucursal" class="java.lang.String"/>
+	<field name="empresa_nombre" class="java.lang.String"/>
+	<field name="vehiculo_placa" class="java.lang.String"/>
+	<field name="servicio_id" class="java.lang.Integer"/>
+	<background>
+		<band height="802" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="185" width="555" height="428" uuid="ec82b6b1-155f-484c-91fa-b3634ad45ee4"/>
+				<imageExpression><![CDATA["D:\\Descargas\\camionmudanza.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="127" splitType="Stretch">
+			<staticText>
+				<reportElement x="133" y="45" width="309" height="36" uuid="0ffecf17-1040-4f94-bf3f-f852f8b846c6"/>
+				<textElement textAlignment="Center">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Detalles de la mudanza]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement x="217" y="92" width="140" height="20" uuid="e1a9704e-c93f-4a19-8adc-643b0b57faf2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="157" y="92" width="100" height="20" uuid="d8270b2f-e8d2-4011-a280-b2c589b1b85a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[N° Servicio: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="217" y="92" width="140" height="20" forecolor="#FF0033" uuid="8526f39a-1dec-42dc-8fec-9816139e7c09"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servicio_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="224" y="13" width="156" height="20" forecolor="#009999" uuid="56f3dd62-bc3c-46ef-b5f8-9b57f728e35b"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{empresa_nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="221" splitType="Stretch">
+			<staticText>
+				<reportElement x="15" y="0" width="100" height="16" uuid="96f77e00-f573-4c23-9f5a-775912d1a7b0"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="20" width="100" height="20" uuid="d1bb43fd-4814-49dd-87a8-121d4d72fe15"/>
+				<text><![CDATA[Nombres:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="67" y="20" width="118" height="20" uuid="85994b09-9ba8-454e-8fac-a37db8380445"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{cliente_nombres}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="44" width="100" height="20" uuid="d6ca6486-b597-4090-88d4-199621624611"/>
+				<text><![CDATA[Apellidos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="67" y="44" width="118" height="20" uuid="4c80564a-dd3f-4683-926e-01331edeb0a3"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{cliente_apellidos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="16" y="69" width="100" height="20" uuid="b06378a3-caa2-4e86-ae75-375e71cdb29e"/>
+				<text><![CDATA[Cédula:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="67" y="69" width="118" height="20" uuid="1372990c-e368-40b3-9d97-0a7e44c25e48"/>
+				<textFieldExpression><![CDATA[$F{cliente_cedula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="20" width="100" height="20" uuid="67330c97-c801-4442-ba81-06c792bd94e8"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="263" y="20" width="225" height="20" uuid="b835a6d9-9569-419f-bfef-6745226b12ed"/>
+				<textFieldExpression><![CDATA[$F{cliente_direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="44" width="100" height="20" uuid="759e62d0-15d6-4cbc-a101-d6a61504dd2a"/>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="263" y="44" width="117" height="20" uuid="bd547a98-f018-429b-b1bf-975135f2a58e"/>
+				<textFieldExpression><![CDATA[$F{cliente_telefono}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="103" width="111" height="16" uuid="17326d99-6da5-4900-bfdd-4930e11ba36e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detalles del Servicio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="121" width="100" height="20" uuid="c154164b-791a-4541-bac3-55a842bd6eed"/>
+				<text><![CDATA[Ciudad de Origen:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="105" y="121" width="152" height="20" uuid="df49909f-8af8-42ec-b1a9-3635a4976ac7"/>
+				<textFieldExpression><![CDATA[$F{ciudad_origen}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="95" width="555" height="2" uuid="7525b838-0f03-49a9-81de-4ef827f981a8"/>
+			</line>
+			<staticText>
+				<reportElement x="15" y="142" width="100" height="20" uuid="403c6e0c-a396-4ab0-948a-8b3c85446897"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="142" width="217" height="20" uuid="4308cb0b-f66f-472f-b73c-2a06b5ae507b"/>
+				<textFieldExpression><![CDATA[$F{solicitud_origen}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="287" y="121" width="100" height="20" uuid="204e3d1b-2d60-4dc2-accb-7a503c8825b3"/>
+				<text><![CDATA[Ciudad de Destino:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="380" y="121" width="141" height="20" uuid="a55f1303-fd03-4e5e-b74b-b16f801301d5"/>
+				<textFieldExpression><![CDATA[$F{ciudad_destino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="342" y="142" width="213" height="20" uuid="9739b6f0-58c9-42c4-9260-4aa01feee64e"/>
+				<textFieldExpression><![CDATA[$F{solicitud_destino}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="287" y="142" width="100" height="20" uuid="76d5ed6e-0ec3-413d-b962-0570a6be950a"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="164" width="100" height="20" uuid="b733923a-9a2e-40cd-b44b-8b5d0c9ec0f1"/>
+				<text><![CDATA[Descripción:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="16" y="184" width="271" height="37" uuid="654fa2c7-76d7-48e3-9de6-72b9e9528485"/>
+				<textFieldExpression><![CDATA[$F{solicitud_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="357" y="164" width="100" height="20" uuid="0486aad3-1b73-41dc-97ff-a39285f4404d"/>
+				<textFieldExpression><![CDATA[$F{servicio_distancia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="287" y="164" width="100" height="20" uuid="42427b7b-0bc6-4095-8def-65f509df3e71"/>
+				<text><![CDATA[Distancia (Km):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="184" width="100" height="20" uuid="dd27292d-f0b7-41ff-bd2a-6f2de3f205dd"/>
+				<text><![CDATA[Placa Vehiculo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="361" y="184" width="100" height="20" uuid="c758b42b-bc0a-48cf-898e-1051b44cd311"/>
+				<textFieldExpression><![CDATA[$F{vehiculo_placa}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="16" y="24" width="100" height="20" uuid="3a7739bf-a579-4489-9daf-a449359596a8"/>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="4" width="154" height="20" uuid="894f78d4-9da0-4fc1-8980-3a9df2e68011"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empleados Encargados:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="0" width="555" height="1" uuid="053edd79-74ee-4324-9a0b-7d864406810d"/>
+			</line>
+			<staticText>
+				<reportElement x="199" y="24" width="100" height="20" uuid="fd021475-6777-4800-b235-8b8d2a4a2692"/>
+				<text><![CDATA[Cédula:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="24" width="100" height="20" uuid="048e0870-3b53-4172-a691-c5e87dcb9ec9"/>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="24" width="100" height="20" uuid="8af4b664-b08d-4698-8265-4826d2dfce9b"/>
+				<text><![CDATA[Tipo Empleado:]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="16" y="0" width="169" height="20" uuid="db80759a-352c-4338-af9a-c4a00cbe5876"/>
+				<textFieldExpression><![CDATA[$F{empleado_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="1" width="100" height="20" uuid="72b03fab-426f-4265-9410-08d605f9f88a"/>
+				<textFieldExpression><![CDATA[$F{empleado_cedula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="1" width="100" height="20" uuid="e4878f36-c4a7-4648-a770-f372bc95dbf1"/>
+				<textFieldExpression><![CDATA[$F{empleado_telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="421" y="0" width="100" height="20" uuid="0bdad4dc-fc5c-469d-bf38-768837f5597f"/>
+				<textFieldExpression><![CDATA[$F{tipo_empleado_descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="100" height="20" uuid="2fcb6896-80c0-499b-8662-fe09ae6923a0"/>
+				<text><![CDATA[Sucursal:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="44" y="1" width="110" height="20" uuid="abad27c8-9adf-4ba9-b70f-77ed28128231"/>
+				<textFieldExpression><![CDATA[$F{sucursal_id}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="9cca5b92-a299-48f2-93d6-a32aafd08ae1"/>
+			</line>
+			<staticText>
+				<reportElement x="154" y="1" width="100" height="20" uuid="e023b849-6981-4a79-b910-56ab92a2d0fa"/>
+				<text><![CDATA[Ciudad:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="199" y="1" width="111" height="20" uuid="2a735f3c-097b-4936-be32-836e9d2fbfe8"/>
+				<textFieldExpression><![CDATA[$F{ciudad_sucursal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="353" y="1" width="100" height="20" uuid="c7b7a753-1f9d-49ea-ab9d-480333c374c3"/>
+				<textFieldExpression><![CDATA[$F{sucursal_telefono}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="310" y="1" width="100" height="20" uuid="df0f8999-7fb8-461a-bdd2-27c4c63e53d7"/>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="21" width="100" height="20" uuid="11c3827a-f223-4a71-8da4-a49f5e0be9f0"/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="46" y="21" width="241" height="20" uuid="d32d2406-68a5-4d80-888d-a2cff2133543"/>
+				<textFieldExpression><![CDATA[$F{sucursal_direccion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
